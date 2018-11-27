@@ -1,0 +1,31 @@
+﻿ 
+    <div class="main-title">
+        <h2>模板管理</h2>
+    </div>
+    <div class="container-fluid main-body">
+        <p>
+            <a class="btn btn-primary" href="#/templates/edit">添加模板文件</a>
+            <button class="btn btn-default" id="download">从服务器更新模板</button>
+            <button class="btn btn-default" id="upload">发布模板到服务器</button>
+        </p>
+        <table id="grid" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>模板文件名</th>
+                    <th>编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{each}}
+                <tr data-name="{{$value}}">
+                    <td>{{$value}}</td>
+                    <td>
+                      <a class="btn btn-primary btn-xs" href="#/templates/edit/{{$value | encodeURIComponent}}">编辑</a>
+                      <button class="btn btn-danger btn-xs">删除</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+ 

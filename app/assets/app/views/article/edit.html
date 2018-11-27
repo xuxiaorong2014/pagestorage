@@ -1,0 +1,71 @@
+﻿<style>
+    #metas {
+        display:inline;
+    }
+    #metas .label{
+        cursor:pointer;
+    }
+    #metas>span>span {
+        margin-left: 2px;
+    }
+</style>
+    
+    <div class="container-fluid main-body">
+        
+        <form class="form-post form-horizontal"   >
+            <div class="form-group form-group-sm">
+                <label class="col-sm-1 control-label">标题</label>
+                <div class="col-sm-4"><input type="text" class="form-control" name="Title" value="{{Model.Title}}" required /></div>
+                <label class="col-sm-1 control-label">目录</label>
+                <div class="col-sm-4"><input type="text" class="form-control" name="Catalog" value="{{Model.Catalog}}" required /></div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-1 control-label">文件名</label>
+                <div class="col-sm-4"><input type="text" class="form-control" name="Name" value="{{Model.Name}}" required /></div>
+                <label class="col-sm-1 control-label">模板</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="Template">
+                        {{each Options}}
+                        {{if $value==Model.Template}}<option selected>{{$value}}</option>{{else}}<option>{{$value}}</option>{{/if}}
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-1 control-label">内容</label>
+                <div class="col-sm-11">
+                    <textarea class="form-control" id="content" name="Content">{{Model.Content}}</textarea>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-1 control-label">其它字段</label>
+                <div class="col-sm-10">
+                    <div style="border: 1px solid #ccc; padding: 5px 10px; ">
+                        <div id="metas">
+                            {{set idx = 0}}
+                            {{each Model.Metas}}
+                            <span data-idx="{{idx}}" class="label label-info">{{$index}} <span>&times;</span></span>
+                            <input type="hidden" name="Metas[{{idx}}].key" value="{{$index}}" />
+                            <input type="hidden" name="Metas[{{idx++}}].value" value="{{$value}}" />
+                            {{/each}}
+                        </div>
+                        <button type="button" id="addmeta" class="btn btn-primary btn-xs">添加字段+</button>
+                    </div>
+
+
+                </div>
+                <input type="hidden" name="Order" value="{{Model.Order}}" />
+                <input type="hidden" name="CreationTime" value="{{Model.CreationTime}}" />
+                <input type="hidden" name="Id" value="{{Model.Id}}" />
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <button class="btn btn-primary">保存</button>
+                    <a class="btn btn-default" href="#/article/list"> 返回 </a>
+                </div>
+            </div>
+        </form>
+        <input type="file" id="upfile" accept="image/*" style="display:none" />
+    </div>
+ 
+ 

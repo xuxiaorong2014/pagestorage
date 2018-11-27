@@ -1,0 +1,15 @@
+﻿<div style="padding:5px 5px 5px 10px;">
+    <form class="form-template" >
+        <div class="form-group" style="margin-bottom : 4px;">
+            <label>文件名</label>
+            <input type="text" class="form-control" name="name" value="{{name}}" required>
+            <input type="hidden" name="key" value="{{name}}">
+        </div>
+        <div class="form-group">
+            <label>内容</label>
+            <textarea class="form-control" id="content" name="content" rows="18" >{{content}}</textarea>   
+        </div>
+        <button class="btn btn-primary">提交</button>
+        <a class="btn btn-default" href="#/templates/list">返回</a>
+    </form>
+</div>

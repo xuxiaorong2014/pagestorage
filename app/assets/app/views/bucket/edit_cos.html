@@ -1,0 +1,86 @@
+﻿ <div class="container" style="width: 700px; margin-top: 50px; ">
+    <div class="main-title">
+        <h2>腾讯云存储设置</h2>
+    </div>
+    <div class="container-fluid main-body">
+        <form class="form-ajax form-horizontal" method="post" action="/api/buckets">
+            <input type="hidden" name="[0].key" value="id" />
+            <input type="hidden" name="[0].value" value="{{id}}" />
+            <input type="hidden" name="[1].key" value="type" />
+            <input type="hidden" name="[1].value" value="cos" />
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label" for="sitename">网站名称</label>
+                <div class="col-sm-10">
+                    <input type="hidden" name="[2].key" value="sitename" />
+                    <input type="text" class="form-control" id="sitename" name="[2].value" value="{{sitename}}">
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label" for="url">网站地址</label>
+                <div class="col-sm-10">
+                    <input type="hidden" name="[3].key" value="url" />
+                    <input type="text" class="form-control" id="url" name="[3].value" value="{{url}}">
+                </div>
+            </div>
+            
+            <div class="form-group form-group-sm" style="{{if id}}display:none{{/if}}">
+                <label class="col-sm-2 control-label" for="bucket">bucket</label>
+                <div class="col-sm-10">
+                    <input type="hidden" name="[4].key" value="bucket" />
+                    <input type="text" class="form-control" id="bucket" name="[4].value" value="{{bucket}}">
+                </div>
+            </div>
+            <div class="form-group form-group-sm" style="{{if id}}display:none{{/if}}">
+                <label class="col-sm-2 control-label" for="APPID">APPID</label>
+                <div class="col-sm-10">
+                    <input type="hidden" name="[5].key" value="APPID" />
+                    <input type="text" class="form-control" id="APPID" name="[5].value" value="{{APPID}}">
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label" for="SecretId">SecretId</label>
+                <div class="col-sm-10">
+                    <input type="hidden" name="[6].key" value="SecretId" />
+                    <input type="text" class="form-control" id="SecretId" name="[6].value" value="{{SecretId}}">
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label" for="SecretKey">SecretKey</label>
+                <div class="col-sm-10">
+                    <input type="hidden" name="[7].key" value="SecretKey" />
+                    <input type="text" class="form-control" id="SecretKey" name="[7].value" value="{{SecretKey}}">
+                </div>
+            </div>
+            <div class="form-group form-group-sm" style="{{if id}}display:none{{/if}}">
+                <label class="col-sm-2 control-label" for="Region">Region</label>
+                <div class="col-sm-10">
+                    <input type="hidden" name="[8].key" value="Region" />
+                    <select class="form-control" id="Region" name="[8].value">
+                        <option value="ap-beijing-1">北京一区（华北）</option>
+                        <option value="ap-beijing">北京</option>
+                        <option value="ap-shanghai">上海（华东）</option>
+                        <option value="ap-guangzhou">广州（华南）</option>
+                        <option value="ap-chengdu">成都（西南）</option>
+                        <option value="ap-chongqing">重庆</option>
+                        <option value="ap-singapore">新加坡</option>
+                        <option value="ap-hongkong">香港</option>
+                        <option value="na-toronto">多伦多</option>
+                        <option value="eu-frankfurt">法兰克福</option>
+                        <option value="ap-mumbai">孟买</option>
+                        <option value="ap-seoul">首尔</option>
+                        <option value="na-siliconvalley">硅谷</option>
+                        <option value="na-ashburn">弗吉尼亚</option>
+                        <option value="ap-bangkok">曼谷</option>
+                        <option value="eu-moscow">莫斯科</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                    <a href="#/bucket/list" class="btn btn-default">返回</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

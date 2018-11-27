@@ -1,0 +1,74 @@
+﻿<style>
+    .btn-blank {
+        display: inline-block;
+        width: 24px;
+    }
+
+    #grid .glyphicon-folder-close {
+        font-size: 18px;
+        color: #ffd800;
+        margin-right: 12px;
+    }
+
+    #grid .glyphicon-globe, #grid .glyphicon-home {
+        font-size: 18px;
+        color: #0094ff;
+        margin-right: 12px;
+    }
+
+    #grid .glyphicon-picture {
+        font-size: 18px;
+        color: #ff6a00;
+        margin-right: 12px;
+    }
+
+    #grid .glyphicon-file {
+        font-size: 18px;
+        color: #808080;
+        margin-right: 12px;
+    }
+</style>
+ 
+    <div class="main-title">
+        <h2>文件管理</h2>
+    </div>
+    <div class="container-fluid main-body">
+        <p>
+            <button class="btn btn-primary" id="add">新建文件</button>
+            <button class="btn btn-default" id="FileUploadButton">上传文件</button>
+            <input type="file" name="FileUpload" id="FileUpload" multiple style="display:none">
+        </p>
+        <ol class="breadcrumb" style="margin-top:10px; margin-bottom:10px">
+            {{if nav.length}}
+            <li><a href="#objects">全部文件</a></li>
+            {{each nav}}
+            {{if $value.link}}
+            <li><a href="#/objects?path={{$value.link}}">{{$value.title}}</a></li>
+            {{else}}
+            <li>{{$value.title}}</li>
+            {{/if}}
+            {{/each}}
+            {{else}}
+            <li>全部文件</li>
+            {{/if}}
+        </ol>
+        <table id="grid" class="table table-hover">
+            {{each folders}}
+            <tr data-key="{{$value.Key}}">
+                <td><span class="glyphicon glyphicon-folder-close"></span> <a href="#/objects?path={{$value.Key}}">{{$value.Key.substr(prefix.length).replace('/', '')}}</a></td>
+                <td>-</td>
+                <td>-</td>
+                <td><div class="tool"><span class="btn-blank"></span> <button data-action="deltree" class="btn btn-danger btn-xs" title="删除"><span class="glyphicon glyphicon-trash"></span></button></div></td>
+            </tr>
+            {{/each}}
+            {{each files}}
+            <tr data-key="{{$value.Key}}">
+                <td><span class="{{$value.Key | Icon}}"></span> {{$value.Key.substr(prefix.length).replace('/', '')}}</td>
+                <td>{{$value.Size}}</td>
+                <td>{{$value.LastModified | dateFormat 'yyyy-MM-dd hh:mm'}}</td>
+                <td><div class="tool">{{@$value.Key | Action}}</div></td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+ 

@@ -1,0 +1,42 @@
+﻿<style>
+    .container {
+        margin-top: 100px;
+        width: 700px;
+    }
+    .list-group-item .btn-default {
+        position: absolute;
+        right: 60px;
+    }
+
+    .list-group-item .btn-danger {
+        position: absolute;
+        right: 20px;
+    }
+</style>
+<div class="container">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">选择网站</div>
+        <ul class="list-group">
+            {{each}}
+            <li class="list-group-item" data-id="{{$value.id}}">
+                <a href="#/bucket/load/{{$value.id}}">{{$value.sitename}}</a>
+                <a href="#/bucket/edit/{{$value.id}}" class="btn btn-default btn-xs">修改</a>
+                <button class="btn btn-danger btn-xs">删除</button>
+            </li>
+            {{/each}}
+        </ul>
+        <div class="panel-footer">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    添加新网站 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#/bucket/add/cos">腾讯云COS</a></li>
+                    <li><a href="#/bucket/add/oss">阿里云OSS</a></li>
+                    <li><a href="#/bucket/add/gcs">谷歌云GCS</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
