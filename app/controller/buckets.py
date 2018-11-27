@@ -6,6 +6,11 @@ from app import APP_ROOT, app , get_client
 
 @app.route("/api/buckets", methods=['GET'])
 def get_buckets():
+    if not os.path.exists(os.path.join(APP_ROOT, 'sites')):
+        os.makedirs(os.path.join(APP_ROOT, 'sites'))
+        with open(os.path.join(APP_ROOT, 'sites','buckets.json'),'w',encoding='utf-8') as fp:
+            fp.write("[]")
+        return "[]", {'Content-Type': 'application/json'}
     with open(os.path.join(APP_ROOT, 'sites','buckets.json'),'r',encoding='utf-8') as f:
         s=f.read()
         return str(s) , {'Content-Type': 'application/json'}
