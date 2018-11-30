@@ -9,8 +9,8 @@ from urllib import parse
 import xml.etree.ElementTree
 from six.moves.urllib.parse import quote, unquote, urlparse, urlencode
 from six import text_type, binary_type, string_types
-from .xml2dict import Xml2Dict
-from .streambody import StreamBody
+from app.clients.xml2dict import Xml2Dict
+from app.clients.streambody import StreamBody
 
 def xml_to_dict(data, origin_str="", replace_str=""):
     root = xml.etree.ElementTree.fromstring(data)

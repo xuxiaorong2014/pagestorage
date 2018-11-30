@@ -1,22 +1,24 @@
 #encoding: utf-8
 import os
-import json
+import json 
 from flask import request,jsonify
-from app import APP_ROOT, app , get_client 
-
+from app import app
+#from app.clients import get_client
+ 
 @app.route("/api/buckets", methods=['GET'])
 def get_buckets():
-    if not os.path.exists(os.path.join(APP_ROOT, 'sites')):
-        os.makedirs(os.path.join(APP_ROOT, 'sites'))
-        with open(os.path.join(APP_ROOT, 'sites','buckets.json'),'w',encoding='utf-8') as fp:
+    print(os.path.join( 'sites','buckets.json'))
+    if not os.path.exists('sites'):
+        os.makedirs('sites')
+        with open(os.path.join( 'sites','buckets.json'),'w',encoding='utf-8') as fp:
             fp.write("[]")
         return "[]", {'Content-Type': 'application/json'}
-    with open(os.path.join(APP_ROOT, 'sites','buckets.json'),'r',encoding='utf-8') as f:
+    with open(os.path.join('sites','buckets.json'),'r',encoding='utf-8') as f:
         s=f.read()
         return str(s) , {'Content-Type': 'application/json'}
 @app.route("/api/buckets/<string:id>", methods=['GET'])
 def get_bucket(id):
-    with open(os.path.join(APP_ROOT,'sites','buckets.json'),'r',encoding='utf-8') as f:
+    with open(os.path.join('sites','buckets.json'),'r',encoding='utf-8') as f:
         buckets = json.load(f)
     for bucket in buckets:
         if id == bucket["id"]:
@@ -34,7 +36,7 @@ def post_bucket():
     model['SecretId'] = request.form['[6].value']
     model['SecretKey'] = request.form['[7].value']
     model['Region'] = request.form['[8].value']
-    with open(os.path.join(APP_ROOT,'sites', 'buckets.json'),'r+',encoding='utf-8') as f:
+    with open(os.path.join('sites', 'buckets.json'),'r+',encoding='utf-8') as f:
         buckets = json.load(f)
         for item in buckets:
             if model['id'] == item["id"]:
@@ -43,13 +45,13 @@ def post_bucket():
         f.seek(0)
         f.truncate()
         json.dump(buckets,f,ensure_ascii=False)
-    if(not os.path.exists("./sites/" + model['id'])):
-        os.makedirs("./sites/" + model['id'] + "/data/posts")
-        os.mkdir("./sites/" + model['id'] + "/theme/include")
+    if(not os.path.exists("sites/" + model['id'])):
+        os.makedirs("sites/" + model['id'] + "/data/posts")
+        os.mkdir("sites/" + model['id'] + "/theme/include")
     return jsonify(model)  
 @app.route("/api/buckets/<string:id>", methods=['PUT'])
 def put_bucket(id):
-    with open(os.path.join(APP_ROOT,'sites', 'buckets.json'),'r+',encoding='utf-8') as f:
+    with open(os.path.join('sites', 'buckets.json'),'r+',encoding='utf-8') as f:
         buckets = json.load(f)
     for bucket in buckets:
         if id == bucket["id"]:
@@ -69,7 +71,7 @@ def put_bucket(id):
     return "Bucket not found", 404
 @app.route("/api/buckets/<string:id>", methods=['DELETE'])
 def delete_bucket(id):
-    with open(os.path.join(APP_ROOT,'sites', 'buckets.json'),'r',encoding='utf-8') as f:
+    with open(os.path.join('sites', 'buckets.json'),'r',encoding='utf-8') as f:
         buckets = json.load(f)
     for bucket in buckets:
         if id == bucket["id"]:

@@ -3,9 +3,10 @@ import json
 import os
 
 from app import APP_ROOT
-from .cos_client import CosClient
-from .oss_client import OssClient
-from .gcs_client import GcsClient
+from app.clients.cos_client import CosClient
+from app.clients.oss_client import OssClient
+from app.clients.gcs_client import GcsClient
+#from .ctypeof import content_type_of
 
 def get_client(bucketname):
     with open(os.path.join(APP_ROOT, 'sites','buckets.json'),'r',encoding='utf-8') as f:
@@ -21,4 +22,4 @@ def get_client(bucketname):
     raise Exception('bad')
 
 if __name__ == "__main__":
-    pass
+    pass 

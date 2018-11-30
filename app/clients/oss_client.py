@@ -8,16 +8,13 @@ from email.utils import formatdate
 from urllib import parse
 import xml.etree.ElementTree
 
-from .xml2dict import Xml2Dict
-from .streambody import StreamBody
+from app.clients.xml2dict import Xml2Dict
+from app.clients.streambody import StreamBody
 
 def xml_to_dict(data, origin_str="", replace_str=""):
     root = xml.etree.ElementTree.fromstring(data)
     xmldict = Xml2Dict(root)
     xmlstr = str(xmldict)
-    #print(xmlstr)
-    #xmlstr = xmlstr.replace("{http://www.qcloud.com/document/product/436/7751}", "")
-    #xmlstr = xmlstr.replace("{https://cloud.tencent.com/document/product/436}", "")
     xmlstr = xmlstr.replace("{http://doc.s3.amazonaws.com/2006-03-01}", "")
     xmlstr = xmlstr.replace("{http://s3.amazonaws.com/doc/2006-03-01/}", "")
     xmlstr = xmlstr.replace("{http://www.w3.org/2001/XMLSchema-instance}", "")
@@ -27,10 +24,11 @@ def xml_to_dict(data, origin_str="", replace_str=""):
     return xmldict
 
 
-class GcsClient(object):
-    def __init__(self,  AccessKeyId=None, AccessKeySecret=None):
+class OssClient(object):
+    def __init__(self,  AccessKeyId=None, AccessKeySecret=None,Region=None):
         self._access_key_id = AccessKeyId
         self._access_key_secret = AccessKeySecret
+        self._region = Region
 
     def send_request(self, method, url, bucket, **kwargs):  
         if(not kwargs.get('headers')):
@@ -41,13 +39,14 @@ class GcsClient(object):
         string_to_sign = string_to_sign + formatdate(None, usegmt=True) + "\n" #Date
 
         for k in sorted(kwargs['headers'].keys()):
-            if k[:7] == "x-goog-":
+            if k[:6] == "x-oss-":
                 string_to_sign = string_to_sign + k.lower() + ":" + kwargs['headers'][k] + "\n"  
+
         string_to_sign = string_to_sign + "/" + bucket +  parse.urlparse(url).path
         signatured_string = self.hmac_sha1_base64_sign(self._access_key_secret,string_to_sign)
         kwargs['headers']['Authorization'] = "AWS {0}:{1}".format(self._access_key_id, signatured_string)
         kwargs['headers']['Date'] = formatdate(None, usegmt=True)
-        kwargs['headers']['Host'] = "{0}.storage.googleapis.com".format(bucket)
+        kwargs['headers']['Host'] = "{0}.oss-{1}.aliyuncs.com".format(bucket,self._region)
         try:
             if method == 'POST':
                 res = requests.post(url, **kwargs)
@@ -77,7 +76,7 @@ class GcsClient(object):
         return None
     
     def list_objects(self, Bucket, Prefix="", Delimiter="", Marker="", MaxKeys=1000, EncodingType="", **kwargs):
-        _url = "http://{0}.storage.googleapis.com/".format(Bucket)
+        _url = "https://{0}.oss-{1}.aliyuncs.com/".format(Bucket,self._region)
         params = {
             'prefix': Prefix,
             'delimiter': Delimiter,
@@ -91,7 +90,7 @@ class GcsClient(object):
     def get_object(self, Bucket, Key, **kwargs):
         if Key[0] != '/':
             Key = '/' + Key
-        _url = "http://{0}.storage.googleapis.com{1}".format(Bucket,Key)
+        _url = "https://{0}.oss-{1}.aliyuncs.com{2}".format(Bucket,self._region,Key)
         rt = self.send_request(method="GET" ,url=_url, bucket=Bucket,stream=True)
         response = rt.headers
         response['Body'] = StreamBody(rt)
@@ -99,14 +98,14 @@ class GcsClient(object):
     def put_object(self, Bucket, Body, Key, **kwargs):
         if Key[0] != '/':
             Key = '/' + Key
-        _url = "http://{0}.storage.googleapis.com{1}".format(Bucket,Key)
+        _url = "https://{0}.oss-{1}.aliyuncs.com{2}".format(Bucket,self._region,Key)
         rt = self.send_request(method="PUT" ,url=_url,bucket=Bucket, data=Body,**kwargs)
         return rt.headers
 
     def delete_object(self, Bucket, Key, **kwargs):
         if Key[0] != '/':
             Key = '/' + Key
-        _url = "http://{0}.storage.googleapis.com{1}".format(Bucket,Key)
+        _url = "https://{0}.oss-{1}.aliyuncs.com{2}".format(Bucket,self._region,Key)
         rt = self.send_request(method="DELETE" ,url=_url,bucket=Bucket)
         return rt.headers
 

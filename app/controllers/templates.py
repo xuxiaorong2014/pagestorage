@@ -1,8 +1,11 @@
 #encoding: utf-8
 import os
 import json
-from app import app,get_client,content_type_of
-from flask import request,jsonify,abort
+from app import app
+from flask import Blueprint,request,jsonify,abort
+from app.clients.get_client import get_client
+from app.clients.ctypeof import content_type_of
+
 @app.route('/api/templates', methods=['GET'])
 def get_templates():
     if 'BucketName' in request.headers:

@@ -1,9 +1,12 @@
 #encoding: utf-8
 import os
 import json
-from app import app,get_client,content_type_of
 from flask import request,jsonify,abort
 from werkzeug.utils import secure_filename
+ 
+from app import app
+from app.clients.get_client import get_client
+from app.clients.ctypeof import content_type_of
 
 @app.route('/api/objects', methods=['GET'])
 def get_objects():
